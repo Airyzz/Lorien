@@ -22,6 +22,8 @@ func tool_event(event: InputEvent) -> void:
 		_current_position = event.position
 		_current_pressure = event.pressure
 		if performing_stroke:
+			if event.pressure == 0:
+				_current_pressure = 1
 			_cursor.set_pressure(event.pressure)
 
 	if event is InputEventMouseButton:
