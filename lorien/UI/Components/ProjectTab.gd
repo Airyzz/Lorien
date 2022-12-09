@@ -10,11 +10,15 @@ signal selected
 signal close_requested
 
 # -------------------------------------------------------------------------------------------------
-onready var _filename_button: Button = $HBoxContainer/FilenameButton
-onready var _close_button: TextureButton = $HBoxContainer/CloseButton
+@onready var _filename_button: Button = $HBoxContainer/FilenameButton
+@onready var _close_button: TextureButton = $HBoxContainer/CloseButton
 
 var is_active := false
-var title: String setget set_title
+var title: String :
+	get:
+		return title # TODOConverter40 Non existent get function 
+	set(mod_value):
+		mod_value  # TODOConverter40 Copy here content of set_title
 var project_id: int
 
 # -------------------------------------------------------------------------------------------------

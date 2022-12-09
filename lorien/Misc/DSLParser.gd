@@ -2,8 +2,8 @@ class_name DSLParser
 
 # This class provides a set of inner subclasses that allow the definition
 # of a parser for a custom language. The language is defined through the means
-# of GrammarElement. Calling GrammarElement.parse("str") on a string will
-# either produce a ParsedSymbol on success, or return null if the parsing 
+# of GrammarElement. Calling GrammarElement.parse("str") checked a string will
+# either produce a ParsedSymbol checked success, or return null if the parsing 
 # failed.
 #
 # The main Grammar elements:
@@ -58,14 +58,14 @@ class_name DSLParser
 
 # -------------------------------------------------------------------------------------------------
 class ParsedSymbol:
-	extends Reference
+	extends RefCounted
 
 	var name: String
 	var last_position: int
 	var subsymbols: Array
 	var value
 	
-	func _init(_name: String, _last_position: int, _subsymbols: Array, _value).():
+	func _init(_name: String,_last_position: int,_subsymbols: Array,_value):
 		name = _name
 		last_position = _last_position
 		subsymbols = _subsymbols
@@ -78,18 +78,18 @@ class ParsedSymbol:
 		return null
 	
 	func _to_string():
-		var subsymbol_strings = PoolStringArray([])
+		var subsymbol_strings = PackedStringArray([])
 		for st in subsymbols:
 			subsymbol_strings.append(str(st))
 		return "<T name={name}{value} [{subsymbols}]>".format({
 			"name": name,
 			"value": (" '%s'" % value) if value else "",
-			"subsymbols": subsymbol_strings.join(", ")
+			"subsymbols": ", ".join(subsymbol_strings)
 		})
 
 # -------------------------------------------------------------------------------------------------
 class GrammarElement:
-	extends Reference
+	extends RefCounted
 
 	func parse(s: String):
 		pass
@@ -119,7 +119,7 @@ class GrammarSequence:
 	var elements: Array
 	var flatten_same_name := false
 	
-	func _init(_name: String, _elements: Array = [], _flatten_same_name = false).():
+	func _init(_name: String,_elements: Array = [],_flatten_same_name = false):
 		name = _name
 		elements = _elements
 		flatten_same_name = _flatten_same_name
@@ -156,7 +156,7 @@ class GrammarLiteral:
 	var value: String
 	var ignore_whitespace := true
 	
-	func _init(_name: String, _value = null).():
+	func _init(_name: String,_value = null):
 		if _value == null:
 			_value = _name
 		name = _name
@@ -179,7 +179,7 @@ class GrammarRegexMatch:
 	var regex: RegEx
 	var ignore_whitespace := true
 	
-	func _init(_name: String, pattern: String).():
+	func _init(_name: String,pattern: String):
 		name = _name
 		regex = RegEx.new()
 		regex.compile(pattern)

@@ -10,7 +10,7 @@ func get_native_mouse_position_on_screen() -> Vector2:
 # -------------------------------------------------------------------------------------------------
 func remove_signal_connections(node: Node, signal_name: String) -> void:
 	for conn in node.get_signal_connection_list(signal_name):
-		node.disconnect(conn["signal"], conn["target"], conn["method"])
+		node.disconnect(conn["signal"],Callable(conn["target"],conn["method"]))
 
 # -------------------------------------------------------------------------------------------------
 func is_mouse_in_control(control: Control) -> bool:
@@ -48,7 +48,7 @@ func calculte_bounding_boxes(strokes: Array, margin: float = 0.0) -> Dictionary:
 	
 # -------------------------------------------------------------------------------------------------
 func return_timestamp_string() -> String:
-	var today := OS.get_datetime()
+	var today := Time.get_datetime_dict_from_system()
 	return "%s%s%s_%s%s%s" % [today.day, today.month, today.year, today.hour, today.minute, today.second]
 
 # -------------------------------------------------------------------------------------------------
@@ -64,12 +64,12 @@ func is_valid_lorien_file(filepath: String) -> bool:
 func generate_uuid(length: int) -> String:
 	var s := ""
 	for i in length:
-		var idx: int = rand_range(0, UUID_ALPHABET.length()-1)
+		var idx: int = randf_range(0, UUID_ALPHABET.length()-1)
 		s += UUID_ALPHABET[idx]
 	return s
 
 # -------------------------------------------------------------------------------------------------
-func translate_action(action_name: String) -> String:
+func translate_action(action_name: String) -> StringName:
 	return TranslationServer.translate("ACTION_" + action_name)
 
 # -------------------------------------------------------------------------------------------------
@@ -77,8 +77,8 @@ func bindable_actions() -> Array:
 	var result := []
 	for action in InputMap.get_actions():
 		# Suppress default keybindings for using menus etc and EFF TWELVE
-		if action.begins_with("ui_") || action.begins_with("player_"):
-			continue
+		#if action.begins_with("ui_") || action.begins_with("player_"):
+		#	continue
 		result.append(action)
 	return result
 

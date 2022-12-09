@@ -15,9 +15,9 @@ func tool_event(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		_last_mouse_position = xform_vector2(event.global_position)
 	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT:
+		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
-				if _bounding_box_cache.empty():
+				if _bounding_box_cache.is_empty():
 					_update_bounding_boxes()
 				performing_stroke = true
 			elif !event.pressed:
@@ -44,7 +44,7 @@ func _stroke_intersects_circle(stroke: BrushStroke, circle_position: Vector2) ->
 		var radius: float = segment_radius + eraser_brush_radius
 		var start = stroke.position + stroke.points[i]
 		var end = stroke.position + stroke.points[i+1]
-		if Geometry.segment_intersects_circle(start, end, circle_position, radius*OVERLAP_THRESHOLD) >= 0:
+		if Geometry2D.segment_intersects_circle(start, end, circle_position, radius*OVERLAP_THRESHOLD) >= 0:
 			return true
 	return false
 
@@ -70,7 +70,7 @@ func _add_undoredo_action_for_erased_strokes() -> void:
 func _update_bounding_boxes() -> void:
 	var strokes: Array = _canvas.get_all_strokes()
 	_bounding_box_cache = Utils.calculte_bounding_boxes(strokes, BOUNDING_BOX_MARGIN)
-	#$"../Viewport/DebugDraw".set_bounding_boxes(_bounding_box_cache.values())
+	#$"../SubViewport/DebugDraw".set_bounding_boxes(_bounding_box_cache.values())
 
 # ------------------------------------------------------------------------------------------------
 func reset() -> void:

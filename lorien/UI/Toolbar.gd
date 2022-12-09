@@ -16,39 +16,39 @@ signal tool_changed(t)
 # -------------------------------------------------------------------------------------------------
 const BUTTON_HOVER_COLOR = Color("50ffd6")
 const BUTTON_CLICK_COLOR = Color("50ffd6")
-const BUTTON_NORMAL_COLOR = Color.white
+const BUTTON_NORMAL_COLOR = Color.WHITE
 
 # -------------------------------------------------------------------------------------------------
-export var file_dialog_path: NodePath
-export var background_color_picker_path: NodePath
+@export var file_dialog_path: NodePath
+@export var background_color_picker_path: NodePath
 
-onready var _new_button: TextureButton = $Console/Left/NewFileButton
-onready var _save_button: TextureButton = $Console/Left/SaveFileButton
-onready var _open_button: TextureButton = $Console/Left/OpenFileButton
-onready var _clear_canvas_button: TextureButton = $Console/Left/ClearCanvasButton
-onready var _undo_button: TextureButton = $Console/Left/UndoButton
-onready var _redo_button: TextureButton = $Console/Left/RedoButton
-onready var _color_button: Button = $Console/Left/ColorButton
-onready var _brush_size_label: Label = $Console/Left/BrushSizeLabel
-onready var _brush_size_slider: HSlider = $Console/Left/BrushSizeSlider
-onready var _background_color_picker: ColorPicker = get_node(background_color_picker_path)
-onready var _background_color_picker_popup: Popup = get_node(background_color_picker_path).get_parent().get_parent() # meh...
-onready var _grid_button: TextureButton = $Console/Right/GridButton
-onready var _fullscreen_btn: TextureButton = $Console/Right/FullscreenButton
-onready var _tool_btn_brush: TextureButton = $Console/Left/BrushToolButton
-onready var _tool_btn_rectangle: TextureButton = $Console/Left/RectangleToolButton
-onready var _tool_btn_circle: TextureButton = $Console/Left/CircleToolButton
-onready var _tool_btn_line: TextureButton = $Console/Left/LineToolButton
-onready var _tool_btn_eraser: TextureButton = $Console/Left/EraserToolButton
-onready var _tool_btn_selection: TextureButton = $Console/Left/SelectionToolButton
+@onready var _new_button: TextureButton = $Console/Left/NewFileButton
+@onready var _save_button: TextureButton = $Console/Left/SaveFileButton
+@onready var _open_button: TextureButton = $Console/Left/OpenFileButton
+@onready var _clear_canvas_button: TextureButton = $Console/Left/ClearCanvasButton
+@onready var _undo_button: TextureButton = $Console/Left/UndoButton
+@onready var _redo_button: TextureButton = $Console/Left/RedoButton
+@onready var _color_button: Button = $Console/Left/ColorButton
+@onready var _brush_size_label: Label = $Console/Left/BrushSizeLabel
+@onready var _brush_size_slider: HSlider = $Console/Left/BrushSizeSlider
+@onready var _background_color_picker: ColorPicker = get_node(background_color_picker_path)
+@onready var _background_color_picker_popup: Popup = get_node(background_color_picker_path).get_parent().get_parent() # meh...
+@onready var _grid_button: TextureButton = $Console/Right/GridButton
+@onready var _fullscreen_btn: TextureButton = $Console/Right/FullscreenButton
+@onready var _tool_btn_brush: TextureButton = $Console/Left/BrushToolButton
+@onready var _tool_btn_rectangle: TextureButton = $Console/Left/RectangleToolButton
+@onready var _tool_btn_circle: TextureButton = $Console/Left/CircleToolButton
+@onready var _tool_btn_line: TextureButton = $Console/Left/LineToolButton
+@onready var _tool_btn_eraser: TextureButton = $Console/Left/EraserToolButton
+@onready var _tool_btn_selection: TextureButton = $Console/Left/SelectionToolButton
 
 var _last_active_tool_button: TextureButton
 
 # -------------------------------------------------------------------------------------------------
 func _ready():
 	var brush_size: int = Settings.get_value(Settings.GENERAL_DEFAULT_BRUSH_SIZE, Config.DEFAULT_BRUSH_SIZE)
-	get_tree().get_root().connect("size_changed", self, "_on_window_resized")
-	_background_color_picker.connect("color_changed", self, "_on_background_color_changed")
+	get_tree().get_root().connect("size_changed",Callable(self,"_on_window_resized"))
+	_background_color_picker.connect("color_changed",Callable(self,"_on_background_color_changed"))
 	_brush_size_label.text = str(brush_size)
 	_brush_size_slider.value = brush_size
 	_last_active_tool_button = _tool_btn_brush
@@ -79,7 +79,7 @@ func enable_tool(tool_type: int) -> void:
 func set_brush_color(color: Color) -> void:
 	_color_button.get("custom_styles/normal").bg_color = color
 	var lum := color.r * 0.2126 + color.g * 0.7152 + color.b * 0.0722
-	var text_color := Color.black if lum > 0.4 else Color.white	
+	var text_color := Color.BLACK if lum > 0.4 else Color.WHITE	
 	_color_button.set("custom_colors/font_color", text_color)
 	_color_button.set("custom_colors/font_color_hover", text_color)
 	_color_button.set("custom_colors/font_color_pressed", text_color)
@@ -93,9 +93,9 @@ func set_fullscreen_toggle(pressed):
 # -------------------------------------------------------------------------------------------------
 func _on_OpenFileButton_pressed():
 	var file_dialog: FileDialog = get_node(file_dialog_path)
-	file_dialog.mode = FileDialog.MODE_OPEN_FILE
-	file_dialog.connect("file_selected", self, "_on_project_selected_to_open")
-	file_dialog.connect("popup_hide", self, "_on_file_dialog_closed")
+	file_dialog.mode = FileDialog.FILE_MODE_OPEN_FILE
+	file_dialog.connect("file_selected",Callable(self,"_on_project_selected_to_open"))
+	file_dialog.connect("popup_hide",Callable(self,"_on_file_dialog_closed"))
 	file_dialog.invalidate()
 	file_dialog.popup_centered()
 
@@ -162,13 +162,13 @@ func _on_BackgroundColorButton_pressed():
 	_background_color_picker_popup.popup()
 	
 	# Stop popup from automatically adjusting position
-	_background_color_picker_popup.rect_position.y = get_parent().rect_size.y
+	_background_color_picker_popup.position.y = get_parent().size.y
 
 # Workaround for a bug in godot: https://github.com/godotengine/godot/issues/38171
 # -------------------------------------------------------------------------------------------------
 func _on_window_resized() -> void:
 	if _background_color_picker_popup.visible:
-		_background_color_picker_popup.rect_position.x = rect_size.x - _background_color_picker_popup.rect_size.x
+		_background_color_picker_popup.position.x = size.x - _background_color_picker_popup.size.x
 
 # -------------------------------------------------------------------------------------------------
 func _on_GridButton_toggled(toggled: bool):

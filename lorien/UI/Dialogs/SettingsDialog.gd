@@ -1,4 +1,4 @@
-extends WindowDialog
+extends Window
 
 # -------------------------------------------------------------------------------------------------
 const THEME_DARK_INDEX 	:= 0
@@ -15,31 +15,31 @@ const UI_SCALE_CUSTOM_INDEX := 1
 signal ui_scale_changed
 
 # -------------------------------------------------------------------------------------------------
-onready var _tab_container: TabContainer = $MarginContainer/TabContainer
-onready var _tab_general: Control = $MarginContainer/TabContainer/General
-onready var _tab_appearance: Control = $MarginContainer/TabContainer/Appearance
-onready var _tab_rendering: Control = $MarginContainer/TabContainer/Rendering
-onready var _pressure_sensitivity: SpinBox = $MarginContainer/TabContainer/General/VBoxContainer/PressureSensitivity/PressureSensitivity
-onready var _brush_size: SpinBox = $MarginContainer/TabContainer/General/VBoxContainer/DefaultBrushSize/DefaultBrushSize
-onready var _canvas_color: ColorPickerButton = $MarginContainer/TabContainer/General/VBoxContainer/DefaultCanvasColor/DefaultCanvasColor
-onready var _project_dir: LineEdit = $MarginContainer/TabContainer/General/VBoxContainer/DefaultSaveDir/DefaultSaveDir
-onready var _theme: OptionButton = $MarginContainer/TabContainer/Appearance/VBoxContainer/Theme/Theme
-onready var _aa_mode: OptionButton = $MarginContainer/TabContainer/Rendering/VBoxContainer/AntiAliasing/AntiAliasing
-onready var _foreground_fps: SpinBox = $MarginContainer/TabContainer/Rendering/VBoxContainer/TargetFramerate/TargetFramerate
-onready var _background_fps: SpinBox = $MarginContainer/TabContainer/Rendering/VBoxContainer/BackgroundFramerate/BackgroundFramerate
-onready var _general_restart_label: Label = $MarginContainer/TabContainer/General/VBoxContainer/RestartLabel
-onready var _appearence_restart_label: Label = $MarginContainer/TabContainer/Appearance/VBoxContainer/RestartLabel
-onready var _rendering_restart_label: Label = $MarginContainer/TabContainer/Rendering/VBoxContainer/RestartLabel
-onready var _language_options: OptionButton = $MarginContainer/TabContainer/General/VBoxContainer/Language/OptionButton
-onready var _brush_rounding_options: OptionButton = $MarginContainer/TabContainer/Rendering/VBoxContainer/BrushRounding/OptionButton
-onready var _ui_scale_options: OptionButton = $MarginContainer/TabContainer/Appearance/VBoxContainer/UIScale/HBoxContainer/UIScaleOptions
-onready var _ui_scale: SpinBox = $MarginContainer/TabContainer/Appearance/VBoxContainer/UIScale/HBoxContainer/UIScale
+@onready var _tab_container: TabContainer = $MarginContainer/TabContainer
+@onready var _tab_general: Control = $MarginContainer/TabContainer/General
+@onready var _tab_appearance: Control = $MarginContainer/TabContainer/Appearance
+@onready var _tab_rendering: Control = $MarginContainer/TabContainer/Rendering
+@onready var _pressure_sensitivity: SpinBox = $MarginContainer/TabContainer/General/VBoxContainer/PressureSensitivity/PressureSensitivity
+@onready var _brush_size: SpinBox = $MarginContainer/TabContainer/General/VBoxContainer/DefaultBrushSize/DefaultBrushSize
+@onready var _canvas_color: ColorPickerButton = $MarginContainer/TabContainer/General/VBoxContainer/DefaultCanvasColor/DefaultCanvasColor
+@onready var _project_dir: LineEdit = $MarginContainer/TabContainer/General/VBoxContainer/DefaultSaveDir/DefaultSaveDir
+@onready var _theme: OptionButton = $MarginContainer/TabContainer/Appearance/VBoxContainer/Theme/Theme
+@onready var _aa_mode: OptionButton = $MarginContainer/TabContainer/Rendering/VBoxContainer/AntiAliasing/AntiAliasing
+@onready var _foreground_fps: SpinBox = $MarginContainer/TabContainer/Rendering/VBoxContainer/TargetFramerate/TargetFramerate
+@onready var _background_fps: SpinBox = $MarginContainer/TabContainer/Rendering/VBoxContainer/BackgroundFramerate/BackgroundFramerate
+@onready var _general_restart_label: Label = $MarginContainer/TabContainer/General/VBoxContainer/RestartLabel
+@onready var _appearence_restart_label: Label = $MarginContainer/TabContainer/Appearance/VBoxContainer/RestartLabel
+@onready var _rendering_restart_label: Label = $MarginContainer/TabContainer/Rendering/VBoxContainer/RestartLabel
+@onready var _language_options: OptionButton = $MarginContainer/TabContainer/General/VBoxContainer/Language/OptionButton
+@onready var _brush_rounding_options: OptionButton = $MarginContainer/TabContainer/Rendering/VBoxContainer/BrushRounding/OptionButton
+@onready var _ui_scale_options: OptionButton = $MarginContainer/TabContainer/Appearance/VBoxContainer/UIScale/HBoxContainer/UIScaleOptions
+@onready var _ui_scale: SpinBox = $MarginContainer/TabContainer/Appearance/VBoxContainer/UIScale/HBoxContainer/UIScale
 
 # -------------------------------------------------------------------------------------------------
 func _ready():
 	_set_values()
 	_apply_language()
-	GlobalSignals.connect("language_changed", self, "_apply_language")
+	GlobalSignals.connect("language_changed",Callable(self,"_apply_language"))
 
 # -------------------------------------------------------------------------------------------------
 func _apply_language() -> void:
@@ -93,7 +93,7 @@ func _set_rounding():
 
 # -------------------------------------------------------------------------------------------------
 func _set_languages(current_locale: String) -> void:
-	# Technically, Settings.language_names is useless from here on out, but I figure it's probably gonna come in handy in the future
+	# Technically, Settings.language_names is useless from here checked out, but I figure it's probably gonna come in handy in the future
 	var sorted_languages := Array(Settings.language_names)
 	var unsorted_languages := sorted_languages.duplicate()
 	# English appears at the top, so it mustn't be sorted alphabetically with the rest

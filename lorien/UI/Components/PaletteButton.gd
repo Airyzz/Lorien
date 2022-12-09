@@ -5,11 +5,19 @@ extends Control
 signal pressed
 
 # -------------------------------------------------------------------------------------------------
-onready var _color_texture: TextureRect = $Color
-onready var _selection_texture: TextureRect = $Selection
+@onready var _color_texture: TextureRect = $Color
+@onready var _selection_texture: TextureRect = $Selection
 
-var selected := false setget set_selected
-var color := Color.white setget set_color
+var selected := false :
+	get:
+		return selected # TODOConverter40 Non existent get function 
+	set(mod_value):
+		mod_value  # TODOConverter40 Copy here content of set_selected
+var color := Color.WHITE :
+	get:
+		return color # TODOConverter40 Non existent get function 
+	set(mod_value):
+		mod_value  # TODOConverter40 Copy here content of set_color
 
 # -------------------------------------------------------------------------------------------------
 func _ready() -> void:
@@ -34,15 +42,15 @@ func set_color(c: Color) -> void:
 
 # -------------------------------------------------------------------------------------------------
 func _get_selection_color() -> Color:
-	return Color.black
+	return Color.BLACK
 
 # -------------------------------------------------------------------------------------------------
 func _get_hover_color() -> Color:
-	return Color.black
+	return Color.BLACK
 
 # -------------------------------------------------------------------------------------------------
 func _on_PaletteButton_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton && !event.pressed && event.button_index == BUTTON_LEFT:
+	if event is InputEventMouseButton && !event.pressed && event.button_index == MOUSE_BUTTON_LEFT:
 		emit_signal("pressed")
 
 # -------------------------------------------------------------------------------------------------

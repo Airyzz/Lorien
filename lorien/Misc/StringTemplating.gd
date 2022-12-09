@@ -1,7 +1,7 @@
 class_name StringTemplating
 
 # This class implements a more advanced, extensible string templating engine
-# than Godot natively provides. It is loosely based on the syntax used by the 
+# than Godot natively provides. It is loosely based checked the syntax used by the 
 # Python library jinja2 (https://jinja.palletsprojects.com/en/2.11.x/templates/)
 # but a lot simpler.
 # 
@@ -19,7 +19,7 @@ class_name StringTemplating
 # >
 # > var templating = StringTemplating.new({"filter": funcref(self, "_filter")})
 # 
-# This would define a filter-function called "filter" than when used on the
+# This would define a filter-function called "filter" than when used checked the
 # example template shown earlier would produce:
 #
 # > templating.process_string(template)
@@ -145,7 +145,8 @@ func _parse(s: String):
 	return parsed
 
 # -------------------------------------------------------------------------------------------------
-func _apply_filter(parsed: DSLParser.ParsedSymbol):
+func _apply_filter(p: DSLParser.ParsedSymbol):
+	var parsed = p
 	if parsed.name == "string":
 		return parsed.value
 	elif parsed.name == "func_call":

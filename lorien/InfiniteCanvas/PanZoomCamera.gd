@@ -34,15 +34,15 @@ func tool_event(event: InputEvent) -> void:
 		if event is InputEventMouseButton:
 			
 			# Scroll wheel up/down to zoom
-			if event.button_index == BUTTON_WHEEL_DOWN:
+			if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 				if event.pressed:
 					_do_zoom_scroll(1)
-			elif event.button_index == BUTTON_WHEEL_UP:
+			elif event.button_index == MOUSE_BUTTON_WHEEL_UP:
 				if event.pressed:
 					_do_zoom_scroll(-1)
 			
 			# MMB press to begin pan; ctrl+MMB press to begin zoom
-			if event.button_index == BUTTON_MIDDLE:
+			if event.button_index == MOUSE_BUTTON_MIDDLE:
 				if !event.control:
 					_pan_active = event.is_pressed()
 					_zoom_active = false
